@@ -1,7 +1,22 @@
-import React from 'react';
-import menuLinksData from './data/menu_links.json'
+import React, {useState, useEffect} from 'react';
+// import menuLinksData from './data/menu_links.json'
 
 const Header = () => {
+
+  const [menuLinksData, setMenuLinksData] = useState([]);
+
+  useEffect(() => {
+    // Load the data from API
+    loadMenuLinkData()
+  },[])
+
+  const loadMenuLinkData = async() => {
+    const resp = await fetch('https://938tkryjs1.execute-api.ap-south-1.amazonaws.com/Production/menuLinks')
+    const jsonData = await resp.json()
+
+    setMenuLinksData(jsonData);
+  }
+
   return (
     <header id="intro">
       <article className="fullheight">
@@ -17,8 +32,8 @@ const Header = () => {
           <div className="brand"><a href="#welcome">Landon <span>Hotel</span></a></div>
           <ul>
             {
-              menuLinksData.map((link) =>
-                <li><a className={`icon ${link.class}`} href={link.href}><span>{link.text}</span></a></li>
+              menuLinksData.map((link, id) =>
+                <li key={id}><a className={`icon ${link.class}`} href={link.href}><span>{link.text}</span></a></li>
               )
             }
           </ul>
